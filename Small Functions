@@ -1,0 +1,9 @@
+## Fairly simple functions referenced throughout this code base
+addmonth=function(Data){ # Adds month and season columns
+  print("WARNING: Remember to assign the result of this to a new dataframe!")
+  print("WARNING: datetime must be of class POSIXct and called exactly DateandTimeUTC")
+  Data <- Data %>% 
+    mutate(Month = as.factor(month(DateandTimeUTC)))
+  Data <- Data %>% # Mutate to add columns for month and season
+    mutate(Season = case_when(Month == "12" | Month == "1" | Month == "2" ~ "Winter", Month == "3" | Month == "4" | Month == "5" ~ "Spring", Month == "6" | Month == "7" | Month == "8" ~ "Summer", Month == "9" | Month == "10" | Month == "11" ~ "Fall"))
+}
