@@ -8,7 +8,7 @@ Summer 2023 REU code - all code used to study shark migration
 - Not tested on Table DAP Data so far
 - Allows you to select variables to keep and "essential variables"
 - Converts everything to numeric without totally losing the units by combining the units row with the header
-- 
+
 **Small Functions: A catch-all document for the simpler functions referenced throughout the codebase**
   - addmonth() adds Month & Seasons columns to a dataframe with a POSIXct datetime column
 
