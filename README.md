@@ -14,5 +14,12 @@ Summer 2023 REU code - all code used to study shark migration
 
 **Small Functions: A catch-all document for the simpler functions referenced throughout the codebase**
   - addmonth() adds Month & Seasons columns to a dataframe with a POSIXct datetime column
+  - polygonify() converts a POLYGON geometric object (the output of a Google MyMaps layer export) to a dataframe of coordinates
 
 ### Larger code documents
+
+**LocationBinning**
+An R script that demonstrates:
+- how to create polygons bounding aggregations sites
+- how to bin individual tracker pings into these polygons
+- how to clean the data afterwards
