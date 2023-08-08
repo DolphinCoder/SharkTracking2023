@@ -1,0 +1,69 @@
+# Setup
+# Package installs
+suppressPackageStartupMessages({
+library("dplyr")
+library("ggplot2")
+library("maps")
+library("ggmap")
+library("mapdata")
+library("readxl")
+library("secr")
+})
+
+# Import data - this example is young of the year sand tiger shark data
+# Data import
+# st = sand tiger, IM = immature, MA = mature, OYO = one year olds, YOY = young of the year, M and F are for sex
+tigerpath <- "/Users/ellac/Dropbox/Mac/Downloads/Summer Research/2023-Wetherbee Lab/DataAnalysis/Sandtiger_data/Sandtiger_csvs"
+tigerpath_png <- "/Users/ellac/Dropbox/Mac/Downloads/Summer Research/2023-Wetherbee Lab/DataAnalysis/Sandtiger_data/Sandtiger_pngs"
+
+# Import cleaned data
+YOYc1 <- read.csv(paste(tigerpath, sep = "/", "YOYc.csv"))
+
+# Binning YOY - this chunk can be copied with find & replace
+
+### Delaware Bay
+# Create T/F vector and attach to YOYc
+YOY_coords <- data_frame(YOYc$lon, YOYc$lat)
+YOY_del <- pointsInPolygon(YOY_coords, delaware_bay)
+# Results in a huge list of true/false nonsense
+YOY_del <- as.data.frame(YOY_del)
+# m is for mapping
+YOYm <- bind_cols(YOYc, YOY_del)
+YOYm <- rename(YOYm, Delaware_Bay = YOY_del)
+
+
+### Delaware Gate
+# Create T/F vector and attach to YOYc
+YOY_delg <- pointsInPolygon(YOY_coords, delaware_gate)
+# Results in a huge list of true/false nonsense
+YOY_delg <- as.data.frame(YOY_delg)
+# m is for mapping
+YOYm <- bind_cols(YOYm, YOY_delg)
+YOYm <- rename(YOYm, Delaware_Gate = YOY_delg)
+
+
+### Duxbury Harbor
+YOY_dux <- pointsInPolygon(YOY_coords, duxbury_harbor)
+# Results in a huge list of true/false nonsense
+Duxbury_Harbor <- as.data.frame(YOY_dux)
+# m is for mapping
+YOYm <- bind_cols(YOYm, Duxbury_Harbor)
+YOYm <- rename(YOYm, Duxbury_Harbor = YOY_dux)
+
+
+### North Carolina
+YOY_nc <- pointsInPolygon(YOY_coords, nc)
+# Results in a huge list of true/false nonsense
+NC <- as.data.frame(YOY_nc)
+# m is for mapping
+YOYm <- bind_cols(YOYm, NC)
+YOYm <- rename(YOYm, NC = YOY_nc)
+
+
+### Florida
+YOY_fl <- pointsInPolygon(YOY_coords, fl)
+# Results in a huge list of true/false nonsense
+FL <- as.data.frame(YOY_fl)
+# m is for mapping
+YOYm <- bind_cols(YOYm, FL)
+YOYm <- rename(YOYm, FL = YOY_fl)
