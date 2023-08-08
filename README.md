@@ -18,7 +18,7 @@ Summer 2023 REU code - all code used to study shark migration
 ### Larger code documents
 
 **LocationBinning**
-An R code document that demonstrates:
+An R script that demonstrates:
 - how to create polygons bounding aggregations sites
 - how to bin individual tracker pings into these polygons
 - how to clean the data afterwards
