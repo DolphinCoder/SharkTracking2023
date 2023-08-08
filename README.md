@@ -16,3 +16,9 @@ Summer 2023 REU code - all code used to study shark migration
   - addmonth() adds Month & Seasons columns to a dataframe with a POSIXct datetime column
 
 ### Larger code documents
+
+**LocationBinning**
+An R code document that demonstrates:
+- how to create polygons bounding aggregations sites
+- how to bin individual tracker pings into these polygons
+- how to clean the data afterwards
