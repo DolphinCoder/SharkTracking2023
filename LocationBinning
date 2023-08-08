@@ -19,6 +19,30 @@ tigerpath_png <- "/Users/ellac/Dropbox/Mac/Downloads/Summer Research/2023-Wether
 # Import cleaned data
 YOYc1 <- read.csv(paste(tigerpath, sep = "/", "YOYc.csv"))
 
+# Define polygons
+# Use Google mymaps to draw a polygon, export as csv, copy/paste the coordinates into a vector, add commas manually (it uses a mix of commas and spaces it sucks)
+
+nc_1 <- c(-76.3153163, 36.530089, -78.5345545, 33.8276823, -75.8099452, 32.845595, -73.6895838, 36.5830389, -76.3153163, 36.530089)
+nc_2 <- nc_1[c(TRUE, FALSE)]
+nc_3 <- nc_1[c(F, T)]
+
+nc <- data.frame(x=nc_2, y=nc_3)
+
+# Plot polygon
+# nc
+NCxlim <- c(-79,-73)
+NCylim <- c(33,37)
+
+ggplot(data=east_coast) +
+  geom_polygon(aes(x=long,y=lat,group=group),fill="gray90",color="black") +
+  coord_fixed(xlim=NCxlim,ylim=NCylim, ratio = 1.3) +
+  geom_polygon(data=nc, aes(x=x, y=y), color="black",size=1, fill=NA) +
+  theme_bw() +
+  theme(text = element_text(size=20),
+          panel.background = element_rect(fill = "azure1", colour = "azure1"),
+          panel.grid.major = element_line(size = 0.5, linetype = 'solid', colour = "white"), 
+          panel.grid.minor = element_line(size = 0.25, linetype = 'solid', colour = "white"))
+
 # Binning YOY - this chunk can be copied with find & replace
 
 ### Delaware Bay
@@ -67,3 +91,36 @@ FL <- as.data.frame(YOY_fl)
 # m is for mapping
 YOYm <- bind_cols(YOYm, FL)
 YOYm <- rename(YOYm, FL = YOY_fl)
+
+# Verification map - points inside and outside the polygon should be different shapes
+ggplot(data=east_coast) +
+  geom_polygon(aes(x=long,y=lat,group=group),fill="palegreen3",color="black") +
+  coord_fixed(xlim=NCxlim,ylim=NCylim,ratio = 1.3) +
+  geom_polygon(data=nc, aes(x=x, y=y), color="black",size=1, fill=NA) +
+  geom_point(data=YOYm, aes(x=lon,y=lat, shape = NC), color="blue",size=1)
+
+# Assign all other locations to "in transit"
+make_transit=function(Data)
+{
+  Data <- Data %>% mutate(In_Transit = case_when(Delaware_Bay == F & Delaware_Gate == F & Duxbury_Harbor == F & NC == F & FL == F ~ T, TRUE ~ F))
+  return(Data)
+}
+
+YOYm2 <- make_transit(YOYm) # Run the loop
+
+# Make all the logical nonsense into one column
+loc=function(Data)
+{
+  Data <- Data %>% mutate(Location = case_when(Delaware_Bay == T ~ "db", Delaware_Gate == T ~ "dg", Duxbury_Harbor == T ~ "dh", NC == T ~ "nc", FL == T ~ "fl", In_Transit == T ~ "it", TRUE ~ "ERROR")) # Create new column that combines all the logical location columns into one with easy abbreviations
+  print(Data %>% filter(Location == "ERROR")) # Print any issues
+  return(Data)
+}
+
+# b is for binned
+YOYb <- loc(YOYm2)
+
+# Data cleaning
+YOYb <- select(YOYb, -c("X"))
+YOYb$DateandTimeUTC <- as.POSIXct(YOYb$DateandTimeUTC, format = "%Y-%m-%d %H:%M:%S")
+# Remove columns I don't care about ("logical nonsense")
+YOYb <- select(YOYb, -c(Receiver, Transmitter, BethLocation, Delaware_Bay, Delaware_Gate, Duxbury_Harbor, NC, FL, In_Transit))
