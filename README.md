@@ -23,3 +23,8 @@ An R script that demonstrates:
 - how to create polygons bounding aggregations sites
 - how to bin individual tracker pings into these polygons
 - how to clean the data afterwards
+
+**DepartureDateID**
+An R script that demonstrates:
+- how to create a dataframe of "runs" (Dates that a shark spent in one location) with a function from https://psyteachr.github.io/tutorials/detecting-runs-in-a-sequence.html (Thank you Dale Barr)
+- how to pull departure dates & certainties from this dataframe of runs
