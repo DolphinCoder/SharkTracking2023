@@ -11,6 +11,8 @@ Summer 2023 REU code - all code used to study shark migration
 
 **mapTrack: A function to map shark tracks with time color coding and arrows**
 - Accepts many parameters
+- Can be adapted, current function is to make a shark track with or without arrows, colored by month or season and optionally faceted by year
+- Variable names MUST BE: Month, DateandTimeUTC, SharkID, lon, lat, Season, 
 
 **Small Functions: A catch-all document for the simpler functions referenced throughout the codebase**
   - addmonth() adds Month & Seasons columns to a dataframe with a POSIXct datetime column
