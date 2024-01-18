@@ -19,7 +19,20 @@ Email ellacrotty@reed.edu with any questions
   - addmonth() adds Month & Seasons columns to a dataframe with a POSIXct datetime column
   - polygonify() converts a POLYGON geometric object (the output of a Google MyMaps layer export) to a dataframe of coordinates
 
-### Larger code documents
+### Example data - input into LocationBinning and then DepartureDateID
+
+**IMMc.csv**
+- Sand tiger shark acoustic tagging data from University of Rhode Island Wetherbee lab
+- IMM = Immature Males, c = cleaned
+- Fixes a few flipped latitudes
+- Deletes several incomplete or extraneous columns
+- Date column is in UTC time zone and of type chr, so it must be converted to Date or POSIXct for date operations (exporting and importing documents with POSIXct format didn't work so here we are)
+
+**YOYc.csv**
+- Sand tiger shark acoustic tagging data from University of Rhode Island Wetherbee lab
+- YOY = Young Of the Year, c = cleaned
+
+### Larger code documents, in order 
 
 **LocationBinning**
 An R script that demonstrates:
