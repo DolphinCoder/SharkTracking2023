@@ -19,7 +19,7 @@ Email ellacrotty@reed.edu with any questions
 
 Example code to run before running map_track:
 df <- df %>% 
-  select(c(SharkID, DateandTimeUTC, id, lat, lon, Season))
+  select(c(SharkID, id, DateandTimeUTC, lat, lon))
 df$DateandTimeUTC <- as.POSIXct(df$DateandTimeUTC, tryFormats = c("%Y-%m-%d %H:%M:%S", "%Y-%m-%dx"), tz = "UTC")
 
 **Small Functions: A catch-all document for the simpler functions referenced throughout the codebase**
