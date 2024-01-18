@@ -11,13 +11,13 @@ Email ellacrotty@reed.edu with any questions
 - Allows you to select variables to keep and "essential variables"
 - Converts everything to numeric without totally losing the units by combining the units row with the header
 
-**mapTrack: A function to map shark tracks with time color coding and arrows**
+**map_track: A function to map shark tracks with time color coding and arrows**
 - Accepts many parameters
 - Can be adapted, current function is to make a shark track with or without arrows, colored by month or season and optionally faceted by year
 - Tag ID number must be first column, Demographic must be second column
 - In order to work, variable names MUST BE: Month (optional), DateandTimeUTC (POSIXct class), SharkID (unique identifier with no spaces), lon (longitude), lat (latitude), Season (optional)
 
-Example code to run before running mapTrack:
+Example code to run before running map_track:
 df <- df %>% 
   select(c(SharkID, DateandTimeUTC, id, lat, lon, Season))
 df$DateandTimeUTC <- as.POSIXct(df$DateandTimeUTC, tryFormats = c("%Y-%m-%d %H:%M:%S", "%Y-%m-%dx"), tz = "UTC")
