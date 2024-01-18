@@ -2,25 +2,29 @@ library(tidyverse)
 library(lubridate) # Just in case
 
 ## Function to map shark tracks color coded by season with arrows
-map_track=function(Data, trackTitle, exportPath, yearFacet = F, arrow = T, by = c("Month", "Season"), xlim = c(-90,-40), ylim = c(20,50)) {
+map_track=function(Data, trackTitle, exportPath, yearFacet = F, arrow = T, by = NA, xlim = c(-90,-40), ylim = c(20,50)) {
   print("WARNING: Tag ID number must be first column, Demographic must be second column, datetime must be called DateandTimeUTC")
   print("WARNING: Latitude column name must be exactly 'lat' and longitude must be 'lon'")
   # Check classes
-  if (!("data.frame" %in% class(Data))) { # Some data have multiple classes for some reason
+  print(by)
+  if(!("data.frame" %in% class(Data))) { # Some data have multiple classes for some reason
     stop("ERROR: Data must be an object of type data.frame")
   }
-  if (class(trackTitle) != "character") {
+  if(class(trackTitle) != "character") {
     stop("ERROR: trackTitle must be an object of type character")
   }
-  if (!("POSIXct" %in% class(Data$DateandTimeUTC))) {
+  if(!("POSIXct" %in% class(Data$DateandTimeUTC))) {
     stop("ERROR: DateandTimeUTC must be named exactly that and be of type POSIXct. God have mercy on your soul and all that.")
+  }
+  if(is.na(by)) { # This is the default, so "by" isn't specified if this is true
+    stop("ERROR: 'by' not specified, please specify by = 'Month' or by = 'Season'")
   }
   
   # Define palettes
   season_pal <- c("Fall" = "orangered3", Summer = "forestgreen", Spring = "hotpink2", Winter = "turquoise3")
   month_pal <- c("6"="red4", "7"="orangered3", "8"="orangered", "9"="gold2", "10"="chartreuse2", "11"="forestgreen", "12"="turquoise3", "1"="steelblue3", "2"="royalblue3", "3"="mediumorchid4", "4"="hotpink2", "5"="violetred3")
   
-  if (!("Season" %in% colnames(Data))){ # Add month and season columns for color if not already present
+  if(!("Season" %in% colnames(Data))){ # Add month and season columns for color if not already present
     Data <- Data %>% 
       mutate(Month = as.factor(month(DateandTimeUTC)))
     Data <- Data %>% # Mutate to add columns for month and season
@@ -87,7 +91,7 @@ map_track=function(Data, trackTitle, exportPath, yearFacet = F, arrow = T, by = 
         ggsave(path=exportPath, filename=paste(trackTitle, sep = "_", paste(paste(Data[1,1], sep = "_", "MonthPath"), sep=".", "png")), width = 3000, height = 3000, units = "px")
       }
     } else {
-      stop("ERROR: 'by' not specified, please specify by = 'Month' or by = 'Season'")
+      stop("ERROR: 'by' not specified 2, please specify by = 'Month' or by = 'Season'")
     }
   }
 }
