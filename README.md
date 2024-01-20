@@ -50,4 +50,4 @@ An R script that demonstrates:
 **DepartureDateID**
 An R script that demonstrates:
 - how to create a dataframe of "runs" (Dates that a shark spent in one location) with a function from https://psyteachr.github.io/tutorials/detecting-runs-in-a-sequence.html (Thank you Dale Barr)
-- how to pull departure dates & certainties from this dataframe of runs
+- how to pull departure dates & ranges from this dataframe of runs
