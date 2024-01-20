@@ -11,11 +11,13 @@ suppressPackageStartupMessages({
   library("secr")
 })
 
-# Import data - this example is young of the year sand tiger shark data
+# Import data - this example is immature male sand tiger shark data
 # Data import
 # st = sand tiger, IM = immature, MA = mature, OYO = one year olds, IMM = young of the year, M and F are for sex
-tigerpath <- "/Users/ellac/Dropbox/Mac/Downloads/Summer Research/2023-Wetherbee Lab/DataAnalysis/Sandtiger_data/Sandtiger_csvs" # Wherever you put your data (should be formatted like IMMc.csv in main branch)
-tigerpath_png <- "/Users/ellac/Dropbox/Mac/Downloads/Summer Research/2023-Wetherbee Lab/DataAnalysis/Sandtiger_data/Sandtiger_pngs"
+####### CHANGE TO Wherever you put your data (should be formatted like IMMc.csv in main branch)
+tigerpath <- "/Users/ellac/Dropbox/Mac/Downloads/Summer Research/2023-Wetherbee Lab/DataAnalysis/SharkTracking2023/Gittest" 
+####### CHANGE TO Wherever you want your graphs going
+tigerpath_png <- "/Users/ellac/Dropbox/Mac/Downloads/Summer Research/2023-Wetherbee Lab/DataAnalysis/SharkTracking2023/Gittest/ST_Gittest_PNGs"
 
 # Import cleaned data
 IMMc <- read.csv(paste(tigerpath, sep = "/", "IMMc.csv"))
@@ -147,5 +149,28 @@ IMMb <- loc(IMMm2)
 IMMb <- select(IMMb, -c("X"))
 # *********CHECK THIS LINE IF YOUR DATETIME COLUMN IS EMPTY*******
 IMMb$DateandTimeUTC <- as.POSIXct(IMMb$DateandTimeUTC, format = "%m/%d/%Y %H:%M:%OS") # Format may change
-# Remove columns I don't care about ("logical nonsense")
+# Remove columns I don't care about ("logical nonsense + some extra columns")
+# *********THIS WILL DIFFER BY INPUT DATA**************
 IMMb <- select(IMMb, -c(Receiver, Transmitter, BethLocation, Delaware_Bay, Delaware_Gate, Duxbury_Harbor, NC, FL, In_Transit))
+
+# Verification map 2
+ggplot(data=east_coast) +
+  geom_polygon(aes(x=long,y=lat,group=group),fill="gray90",color="black") +
+  coord_fixed(xlim = c(-82,-65), ratio = 1.3) +
+  geom_polygon(data=nc, aes(x=x, y=y), color="black",size=1, fill=NA) +
+  geom_polygon(data=fl, aes(x=x, y=y), color="black",size=1, fill=NA) +
+  geom_polygon(data=delaware_bay, aes(x=x, y=y), color="black",size=1, fill=NA) +
+  geom_polygon(data=delaware_gate, aes(x=x, y=y), color="black",size=1, fill=NA) +
+  geom_polygon(data=duxbury_harbor, aes(x=x, y=y), color="black",size=1, fill=NA) +
+  geom_point(data=IMMb, aes(x=lon,y=lat, color = Location), size=1)
+theme_bw() +
+  theme(text = element_text(size=20),
+        panel.background = element_rect(fill = "azure1", colour = "azure1"),
+        panel.grid.major = element_line(size = 0.5, linetype = 'solid', colour = "white"), 
+        panel.grid.minor = element_line(size = 0.25, linetype = 'solid', colour = "white"))
+# Save map 2
+ggsave("Bin_Verification.png", path = tigerpath_png, width = 3000, height = 5000, units = "px")
+
+# Export binned IMM data
+write.csv(IMMb, file = paste(tigerpath, sep = "/", "IMMb.csv"))
+
