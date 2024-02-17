@@ -18,9 +18,12 @@ Email ellacrotty@reed.edu with any questions
 - In order to work, variable names MUST BE: Month (optional), DateandTimeUTC (POSIXct class), SharkID (unique identifier with no spaces), lon (longitude), lat (latitude), Season (optional)
 
 Example code to run before running map_track:
+
+```{r}
 df <- df %>% 
   select(c(SharkID, id, DateandTimeUTC, lat, lon))
 df$DateandTimeUTC <- as.POSIXct(df$DateandTimeUTC, tryFormats = c("%Y-%m-%d %H:%M:%S", "%Y-%m-%dx"), tz = "UTC")
+```
 
 **Small Functions: A catch-all document for the simpler functions referenced throughout the codebase**
   - addmonth() adds Month & Seasons columns to a dataframe with a POSIXct datetime column
